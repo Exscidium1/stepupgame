@@ -56,7 +56,7 @@
 
         const PLATFORM_WIDTH = 70;
         const PLATFORM_HEIGHT = 10;
-        const PLAYER_SIZE = 30;
+        const PLAYER_SIZE = 40;
         const STEP_HEIGHT = 50;
 		const PLATFORM_OFFSET = 70; // Distance between middle points of platforms
         const TIME_LIMIT = 3; // Seconds per step
@@ -75,7 +75,6 @@
         function init() {
 			generateInitialPlatforms();
 			calculatePlatformPositions();
-            //generateNextPlatform();
             draw();
             startTimer();
         }
@@ -95,7 +94,7 @@
 		// However, the number of platforms are small so the cost is trivial
 		function calculatePlatformPositions() {
 			// First platform is always under the player
-			platformPos = [{ x: playerX - PLATFORM_WIDTH / 2, y: playerY + 5 }];
+			platformPos = [{ x: playerX - PLATFORM_WIDTH / 2, y: playerY + 20 }];
 			let currX = platformPos[0].x;
 			let currY = platformPos[0].y;
 			for (let i = 0; i < platformDir.length; i++) {
@@ -205,12 +204,12 @@
             // TODO Draw player as triangle pointed towards facing
 				ctx.beginPath();
 			if (facingRight) {
-				ctx.moveTo(playerX - PLAYER_SIZE / 2, playerY - PLAYER_SIZE / 2);
-				ctx.lineTo(playerX - PLAYER_SIZE / 2, playerY + PLAYER_SIZE / 2);
+				ctx.moveTo(playerX - PLAYER_SIZE / 2 + 5, playerY - PLAYER_SIZE / 2);
+				ctx.lineTo(playerX - PLAYER_SIZE / 2 + 5, playerY + PLAYER_SIZE / 2);
 				ctx.lineTo(playerX + PLAYER_SIZE / 2, playerY);
 			} else {
-				ctx.moveTo(playerX + PLAYER_SIZE / 2, playerY + PLAYER_SIZE / 2);
-				ctx.lineTo(playerX + PLAYER_SIZE / 2, playerY - PLAYER_SIZE / 2);
+				ctx.moveTo(playerX + PLAYER_SIZE / 2 - 5, playerY + PLAYER_SIZE / 2);
+				ctx.lineTo(playerX + PLAYER_SIZE / 2 - 5, playerY - PLAYER_SIZE / 2);
 				ctx.lineTo(playerX - PLAYER_SIZE / 2, playerY);
 			}
 			ctx.closePath();
