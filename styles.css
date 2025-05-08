@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+}
+canvas {
+    background: #222;
+    margin: 20px 0;
+    border: 2px solid #000;
+    width: 800px;
+}
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#message {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+    height: 30px;
+}
+#timer-container {
+    width: 200px;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px;
+}
+
+#timer-bar {
+    height: 100%;
+    width: 100%;
+    background-color: #4CAF50;
+    transition: width 0.1s linear;
+}
+
+.empty {
+    display: none;
+}
