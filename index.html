@@ -32,18 +32,36 @@
             margin: 10px 0;
             height: 30px;
         }
+		#timer-container {
+			width: 200px;
+			height: 20px;
+			background-color: #ddd;
+			border-radius: 10px;
+			overflow: hidden;
+			margin: 20px;
+		}
+
+		#timer-bar {
+			height: 100%;
+			width: 100%;
+			background-color: #4CAF50;
+			transition: width 0.1s linear;
+		}
     </style>
 </head>
 <body>
     <h1>Step Up Minigame</h1>
     <div id="message"></div>
     <canvas id="gameCanvas" width="800" height="800"></canvas>
-    <div class="controls">
+    <div class="controls" style="display: none">
         <button id="flipButton">Flip Direction</button>
         <button id="stepButton">Step Up</button>
     </div>
-    <div>Score: <span id="score">0</span></div>
+	<div id="timer-container">
+		<div id="timer-bar"></div>
+	</div>
     <div>Time Left: <span id="timeLeft">3.0</span>s</div>
+    <div>Score: <span id="score">0</span></div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -53,6 +71,7 @@
         const scoreDisplay = document.getElementById('score');
         const timeLeftDisplay = document.getElementById('timeLeft');
         const messageDisplay = document.getElementById('message');
+		const timerBar = document.getElementById("timer-bar");
 
         const PLATFORM_WIDTH = 70;
         const PLATFORM_HEIGHT = 10;
@@ -61,6 +80,7 @@
 		const PLATFORM_OFFSET = 70; // Distance between middle points of platforms
         const TIME_LIMIT = 3; // Seconds per step
         let timeLeft = TIME_LIMIT;
+		let newTimeLimit = TIME_LIMIT;
 
         let playerX = canvas.width / 2;
         let playerY = canvas.height - 50;
@@ -177,19 +197,41 @@
 
                 timeLeftDisplay.textContent = timeLeft.toFixed(1);
                 if (timeLeft <= 0) {
+					timeLeft = 0;
+					timeLeftDisplay.textContent = 0;
                     gameOver = true;
                     messageDisplay.textContent = "Game Over";
                     clearInterval(timer);
+					clearInterval(updateTimer);
                     draw();
                 }
             }, 100);
         }
 
+		function updateTimer() {
+			const percentageLeft = (timeLeft / newTimeLimit) * 100;
+			timerBar.style.width = `${percentageLeft}%`;
+console.log(percentageLeft);
+			if (percentageLeft < 30) {
+				timerBar.style.backgroundColor = "#f44336";
+			} else if (percentageLeft < 60) {
+				timerBar.style.backgroundColor = "#FFC107";
+			} else {
+				timerBar.style.backgroundColor = "#4CAF50";
+			}
+		}
+
+
         function resetTimer() {
             clearInterval(timer);
-            timeLeft = TIME_LIMIT;
+			clearInterval(updateTimer);
+			if (newTimeLimit > .5) {
+				newTimeLimit -= .01;
+			}
+            timeLeft = newTimeLimit;
             timeLeftDisplay.textContent = timeLeft.toFixed(1);
             startTimer();
+			setInterval(updateTimer, 10);
         }
 
         function draw() {
@@ -243,6 +285,7 @@
                 scoreDisplay.textContent = score;
                 gameOver = false;
                 messageDisplay.textContent = '';
+				newTimeLimit = TIME_LIMIT;
                 resetTimer();
                 generateNextPlatform();
                 draw();
