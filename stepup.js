@@ -9,6 +9,8 @@ const messageDisplay = document.getElementById('message');
 const timerBar = document.getElementById("timer-bar");
 const restartGameButton = document.getElementById("restartGameButton");
 const restartGameDisplay = document.getElementById("gameTryAgain");
+const stepLeftButton = document.getElementById("stepleft");
+const stepRightButton = document.getElementById("stepright");
 
 const PLATFORM_WIDTH = 70;
 const PLATFORM_HEIGHT = 10;
@@ -85,6 +87,20 @@ stepButton.addEventListener('click', () => {
 
 restartGameButton.addEventListener('click', () => {
     restartGame();
+});
+
+stepLeftButton.addEventListener('click', () => {
+    if (!gameOver) {
+        facingRight = false;
+        tryStep();
+    }
+});
+
+stepRightButton.addEventListener('click', () => {
+    if (!gameOver) {
+        facingRight = true;
+        tryStep();
+    }
 });
 
 // Keyboard support (Space = Step, F = Flip)
