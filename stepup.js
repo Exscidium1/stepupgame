@@ -246,8 +246,18 @@ function draw() {
 }
 
 
-canvas.addEventListener('click', () => {
-    if (gameOver) {
+canvas.addEventListener('click', (event) => {
+    if (!gameOver) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+
+        if (x < canvas.width / 2) {
+            facingRight = false;
+            tryStep();
+        } else {
+            facingRight = true;
+            tryStep();
+        }
     }
 });
 

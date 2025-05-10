@@ -11,6 +11,7 @@ canvas {
     border: 2px solid #000;
     width: 800px;
     font-family: Verdana, arial, helvetica, sans-serif;
+    touch-action: manipulation;
 }
 .controls {
     display: flex;
@@ -64,6 +65,5 @@ canvas {
     margin-top: -75px;
     margin-left: -158px;
     text-align: center;
-    display: none;
     z-index: 1000;
 }
