@@ -9,15 +9,26 @@
 	<p>Move the correct direction to step up each platform using the A and D or the left and right arrows!</p>
     <div id="message"></div>
     <canvas id="gameCanvas" width="800" height="800"></canvas>
-    <div class="controls" class="empty">
+    <div class="controls empty">
         <button id="flipButton">Flip Direction</button>
         <button id="stepButton">Step Up</button>
+    </div>
+    <div class="controls">
+        <button id="stepleft">Step Left</button>
+        <button id="stepright">Step Right</button>
     </div>
 	<div id="timer-container">
 		<div id="timer-bar"></div>
 	</div>
     <div>Time Left: <span id="timeLeft">3.0</span>s</div>
     <div>Score: <span id="score">0</span></div>
+	<div id="gameTryAgain" class="tryAgainDialog empty">
+		<div>Step Up Game</div>
+		<p></p>
+		<p>You died :(</p>
+		<p></p>
+		<button id="restartGameButton">Play Again?</button>
+	</div>
 
 	<script type="text/javascript" src="./stepup.js"></script>
 </body>

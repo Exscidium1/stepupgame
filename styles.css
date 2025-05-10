@@ -2,7 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: Arial, sans-serif;
+    font-family: Verdana, arial, helvetica, sans-serif;
     background: #f0f0f0;
 }
 canvas {
@@ -10,16 +10,18 @@ canvas {
     margin: 20px 0;
     border: 2px solid #000;
     width: 800px;
+    font-family: Verdana, arial, helvetica, sans-serif;
 }
 .controls {
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
 }
-button {
+.controls button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    width: 10em;
 }
 #message {
     font-size: 24px;
@@ -45,4 +47,23 @@ button {
 
 .empty {
     display: none;
+}
+
+.tryAgainDialog {
+    padding: 8px;
+    margin: 0px;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: Verdana, arial, helvetica, sans-serif;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 100px;
+    margin-top: -75px;
+    margin-left: -158px;
+    text-align: center;
+    display: none;
+    z-index: 1000;
 }

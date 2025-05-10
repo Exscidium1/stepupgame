@@ -7,6 +7,8 @@ const scoreDisplay = document.getElementById('score');
 const timeLeftDisplay = document.getElementById('timeLeft');
 const messageDisplay = document.getElementById('message');
 const timerBar = document.getElementById("timer-bar");
+const restartGameButton = document.getElementById("restartGameButton");
+const restartGameDisplay = document.getElementById("gameTryAgain");
 
 const PLATFORM_WIDTH = 70;
 const PLATFORM_HEIGHT = 10;
@@ -81,8 +83,13 @@ stepButton.addEventListener('click', () => {
     }
 });
 
+restartGameButton.addEventListener('click', () => {
+    restartGame();
+});
+
 // Keyboard support (Space = Step, F = Flip)
 document.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyR') restartGame();
     if (gameOver) return;
     if (e.code === 'Space' || e.code === 'KeyM') tryStep();
     if (e.code === 'KeyF' || e.code === 'KeyN') facingRight = !facingRight;
@@ -99,9 +106,7 @@ document.addEventListener('keydown', (e) => {
 
 // Attempt to step up
 function tryStep() {
-    const nextPlatform = platformDir[platformDir.length - 1];
     const stepDirection = facingRight ? 1 : -1;
-    const nextX = playerX + (stepDirection * PLATFORM_WIDTH);
 
     // Check if step is valid
     if (stepDirection == platformDir[0]) {
@@ -114,12 +119,9 @@ function tryStep() {
         calculatePlatformPositions();
 
         resetTimer();
-        generateNextPlatform();
     } else {
         // Fall
-        gameOver = true;
-        messageDisplay.textContent = "Game Over! You fell.";
-        clearInterval(timer);
+        endGame();
     }
     draw();
 }
@@ -134,15 +136,38 @@ function startTimer() {
         if (timeLeft <= 0) {
             timeLeft = 0;
             timeLeftDisplay.textContent = 0;
-            gameOver = true;
-            messageDisplay.textContent = "Game Over";
-            clearInterval(timer);
-            clearInterval(updateTimer);
-            draw();
+            endGame();
         }
     }, 100);
 }
 
+function endGame() {
+    gameOver = true;
+    messageDisplay.textContent = "Game Over";
+    clearInterval(timer);
+    clearInterval(updateTimer);
+    draw();
+    restartGameDisplay.style.display = 'block';
+}
+
+function restartGame() {
+    restartGameDisplay.style.display = 'none';
+    console.log("restart game");
+    playerX = canvas.width / 2;
+    playerY = canvas.height - 50;
+    facingRight = true;
+    platforms = [{ x: playerX - PLATFORM_WIDTH / 2, y: playerY + 20 }];
+    score = 0;
+    scoreDisplay.textContent = score;
+    gameOver = false;
+    messageDisplay.textContent = '';
+    newTimeLimit = TIME_LIMIT;
+    resetTimer();
+    generateNextPlatform();
+    draw();
+}
+
+// Update timer graphic based on time left
 function updateTimer() {
     const percentageLeft = (timeLeft / newTimeLimit) * 100;
     timerBar.style.width = `${percentageLeft}%`;
@@ -154,7 +179,6 @@ function updateTimer() {
         timerBar.style.backgroundColor = "#4CAF50";
     }
 }
-
 
 function resetTimer() {
     clearInterval(timer);
@@ -177,8 +201,7 @@ function draw() {
         ctx.fillRect(platform.x, platform.y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
     });
 
-    // TODO Draw player as triangle pointed towards facing
-        ctx.beginPath();
+    ctx.beginPath();
     if (facingRight) {
         ctx.moveTo(playerX - PLAYER_SIZE / 2 + 5, playerY - PLAYER_SIZE / 2);
         ctx.lineTo(playerX - PLAYER_SIZE / 2 + 5, playerY + PLAYER_SIZE / 2);
@@ -193,36 +216,22 @@ function draw() {
     ctx.fillStyle = "blue";
     ctx.fill();
 
-    /*ctx.beginPath();
-    ctx.arc(playerX, playerY, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "green";
-    ctx.fill();*/
-
     // Game over overlay
     if (gameOver) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        /*ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#fff';
-        ctx.font = '30px Arial';
+        ctx.font = '30px Verdana, arial, helvetica, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('Click or press \'R\' to restart', canvas.width / 2, canvas.height / 2);
+        */
+       
     }
 }
 
+
 canvas.addEventListener('click', () => {
     if (gameOver) {
-        playerX = canvas.width / 2;
-        playerY = canvas.height - 50;
-        facingRight = true;
-        platforms = [{ x: playerX - PLATFORM_WIDTH / 2, y: playerY + 20 }];
-        score = 0;
-        scoreDisplay.textContent = score;
-        gameOver = false;
-        messageDisplay.textContent = '';
-        newTimeLimit = TIME_LIMIT;
-        resetTimer();
-        generateNextPlatform();
-        draw();
     }
 });
 
